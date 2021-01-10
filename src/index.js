@@ -3,13 +3,15 @@ import ReactDOM from "react-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import { createFirestoreInstance } from "redux-firestore";
 import { rootReducer } from "./reducers/index";
 import App from "./view/App";
 import { BrowserRouter } from "react-router-dom";
+import { applyMiddleware, compose, createStore } from 'redux';
+import thunk from 'redux-thunk';
+import { getFirebase } from 'react-redux-firebase'
 
 const firebaseConfig = {
   apiKey: "AIzaSyCp64qjX52N3x8E6DnLJIJpA_yS3M8sdEs",
@@ -26,11 +28,17 @@ const rrfConfig = {
   useFirestoreForProfile: true,
 };
 
+const middlewares = [
+  thunk.withExtraArgument(getFirebase)
+]
+
 firebase.initializeApp(firebaseConfig);
 firebase.firestore();
 
 const initialState = {};
-const store = createStore(rootReducer, initialState);
+const store = createStore(rootReducer, initialState, compose(
+  applyMiddleware(...middlewares),
+));
 
 const rrfProps = {
   firebase,
