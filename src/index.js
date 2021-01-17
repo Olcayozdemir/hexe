@@ -12,6 +12,7 @@ import { BrowserRouter } from "react-router-dom";
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { getFirebase } from 'react-redux-firebase'
+import GlobalStyleTheme from "./view/styles/global";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCp64qjX52N3x8E6DnLJIJpA_yS3M8sdEs",
@@ -49,6 +50,7 @@ const rrfProps = {
 
 ReactDOM.render(
   <React.StrictMode>
+    <GlobalStyleTheme />
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
         <BrowserRouter>
